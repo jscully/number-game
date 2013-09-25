@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html data-ng-app="countdown-app">
+<head>
+    <title>Countdown number game</title>
+    <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width"/>
+        <link rel="stylesheet" href="js/styles/bootstrap.css"/>
+        <link rel="stylesheet" href="js/styles/bootstrap-responsive.css"/>
+        <link rel="stylesheet" href="js/styles/main.css"/>
+        <link rel="stylesheet" href="js/styles/nav-bar.css"/>
+        <script src="js/scripts/angular.js"></script>
+        <script src="js/scripts/jquery-2.0.3.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/mainController.js"></script>
+</head>
+<body>
+        <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="row">
+                <div class="span3">
+                 <a href="#/">Home</a>
+                 </div>
+                 <div class="span3">
+                 <a href="#/holiday">Random Destination</a>
+                 </div>
+                 <div class="span3">
+                 <a href="#/addDestination">Add Destination</a>
+                 </div>
+                 <div class="span3">
+                 <a href="#/showDestinations">Show Destinations</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div ng-view>
+        </div><hr />
+    </div>
+
+    <div id="footer">
+        <div class="navbar navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                    <footer>
+                        <div class="row">
+                            <div class="span4">
+                                Created by Joseph Scully
+                            </div>
+                            <div class="span4">
+                                LinkedIn: <a href="http://ie.linkedin.com/pub/joseph-scully/54/a67/577">Joseph Scully</a>
+                            </div>
+                            <div class="span4">
+                                Contact: josephscully44@hotmail.com</a>
+                            </div>
+                        </div>
+                   </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

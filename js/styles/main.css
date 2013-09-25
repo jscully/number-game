@@ -1,0 +1,40 @@
+<style type="text/css">
+ul {
+list-style-type: none ;
+margin: 16px 0px 22px 0px ;
+padding: 0px 0px 0px 0px ;
+}
+
+ul:after {
+clear: both ;
+content: "" ;
+display: block ;
+}
+
+li {
+background-color: #Ff000 ;
+border: 1px solid #999966;
+border-radius: 4px 4px 4px 4px ;
+cursor: pointer ;
+float: left ;
+height: 70px ;
+margin: 0px 16px 0px 0px ;
+text-align: center ;
+width: 160px ;
+}
+li.selected {
+border-color: #CC0000 ;
+}
+#button-group{
+    width:50px;
+    height:100px;
+    margin-right:10px;
+    float:right;
+}
+#number-fields{
+    width:860px;
+    height:100px;
+    margin-right:10px;
+    float:left;
+}
+</style>

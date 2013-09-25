@@ -1,0 +1,15 @@
+<div class="hero-unit">
+    <ul id="number-fields">
+        <li title="Number"
+         ng-repeat="number in numbers"
+         ng-model="number">
+         {{number}}
+    </li>
+    </ul>
+    <div id="button-group">
+        <button title="Pick from the large stack" ng-click="pickLargeNumber()">Large</button></br>
+        <button title="Pick from the small stack" ng-click="pickSmallNumber()">Small</button>
+        <button title="Start timer" ng-click="startCountdown()">start timer</button></br>
+        <p ng-model="countdowntimer"> {{countdowntimer}} </p>
+    </div><br>
+</div>
