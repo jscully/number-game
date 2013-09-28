@@ -1,39 +1,47 @@
-app.controller('MainCtrl', function($scope){
-    $scope.numbers = [];
+app.controller('MainCtrl', function($scope, $timeout){
+    $scope.numberSet = [];
     $scope.largeNumbers = [25, 50, 75, 100, 125];
     $scope.smallNumbers = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
-    $scope.countdowntimer = 30;
-    var count = 30;
-    var counter;
-    var timerOn = false;
+    $scope.counter = 5;
+    $scope.mathCharacters = ["+" , "-" , " /", "*"];
 
     $scope.pickLargeNumber =  function(){
-        $scope.numbers.push($scope.largeNumbers[Math.floor(Math.random() * $scope.largeNumbers.length)]);
-    };
-    $scope.pickSmallNumber =  function(){
-        $scope.numbers.push($scope.smallNumbers[Math.floor(Math.random() * $scope.smallNumbers.length)])
-    };
-    $scope.startCountdown = function(){
-        timerOn = !timerOn;
-        if(timerOn){
-            counter = setInterval($scope.timer, 1000);
+        var random = $scope.largeNumbers[Math.floor(Math.random() * $scope.largeNumbers.length)]
+        if(!inArray($scope.numberSet, random)){
+            $scope.numberSet.push(random);
         }
         else{
-            console.log("resetting");
-            clearInterval(counter);
-            count = 30;
+            $scope.pickLargeNumber();
         }
     };
+    $scope.pickSmallNumber =  function(){
+        $scope.numberSet.push($scope.smallNumbers[Math.floor(Math.random() * $scope.smallNumbers.length)])
+    };
+    $scope.onTimeout = function(){
+        var mytimeout = $timeout($scope.startCountdown, 1000);
+    }
+    $scope.startCountdown =  function(){
+        $scope.counter--;
+        if($scope.counter >= 0){
+            mytimeout = $timeout($scope.startCountdown, 1000);
+        }
+        else{
+            alert('Time is up');
+            $scope.reset();
+        }
+    }
 
-    $scope.timer = function(){
-        console.log(count);
-        count=count-1;
-        if (count <= 0){
-            console.log("Finished");
-            clearInterval(counter);
-            count = 30;
-            return;
+    $scope.reset = function(){
+        $scope.counter = 5;
+    }
+
+    var inArray = function(array, id){
+        for(var i=0;i<array.length;i++) {
+            if(array[i] === id) {
+                return true;
+            }
         }
-        $scope.countdowntimer = count;
-    };
+        return false;
+    }
+
 });
