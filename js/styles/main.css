@@ -61,17 +61,26 @@ border:1px solid #424242; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
     float:left;
 }
 
-#my-text {
-  font-size:290px;
-  height:290px;
-  left:0;
-  background-color: #BDBDBD;
-  line-height:33px;
-  top:0;
-  width:30px;
-}
 #item-group{
-    clear: both;
+    margin-top:7px;
+    position:absolute;
+    bottom:0;
+    float: bottom;
+}
+#counter {
+  width:400px;
+  height:250px;
+  float:left;
+}
+
+#target {
+  width:400px;
+  height:250px;
+  float:right;
+}
+
+#special-p{
+  font-size: 155px;
 }
 
 </style>

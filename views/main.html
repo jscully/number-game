@@ -1,21 +1,29 @@
 <div class="hero-unit">
-<center>
+
     <div id="number-fields">
     <ul>
         <li title="Number"
          ng-repeat="number in numberSet"
          ng-model="number">
-         {{number}}
+         <h1>{{number}}</h1>
     </li>
     </ul>
 </div></br>
-</center>
+
     <div id="button-group">
         <button title="Pick from the large stack" ng-click="pickLargeNumber()">Large</button>
         <button title="Pick from the small stack" ng-click="pickSmallNumber()">Small</button>
-        <button title="Start timer" ng-click="onTimeout()">start timer</button>
-    </div></br></br></br></br></br>
-    <div id="item-group">
-        <p id="my-text">{{counter}}</p>
+        <button title="Start timer" ng-click="initiateCountdown()"
+        ng-hide="startTimer">Start</button>
     </div>
+<center>
+    <div id="item-group" ng-hide="gameInfo">
+        <div id="counter">
+            <p id="special-p">{{counter}}</p>
+        </div>
+        <div id="target">
+            <p id="special-p">{{target}}</p>
+        </div>
+    </div>
+</center>
 </div>
