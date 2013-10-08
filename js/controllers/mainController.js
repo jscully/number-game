@@ -7,10 +7,11 @@ app.controller('MainCtrl', function($scope, $timeout){
     $scope.mathCharacters = ["+" , "-" , " /", "*"];
     $scope.gameInfo = true;
     $scope.startTimer = true;
+    $scope.mytimeout;
 
     $scope.pickLargeNumber =  function(){
         //checking the size of the array
-        if(!arrayFull($scope.numberSet)){
+        if(!arrayIsFull($scope.numberSet)){
             var random = $scope.largeNumbers[Math.floor(Math.random() * $scope.largeNumbers.length)]
             if(!inArray($scope.numberSet, random)){
                 $scope.numberSet.push(random);
@@ -21,43 +22,51 @@ app.controller('MainCtrl', function($scope, $timeout){
         }
     };
     $scope.pickSmallNumber =  function(){
-        if(!arrayFull($scope.numberSet)){
-            $scope.numberSet.push($scope.smallNumbers[Math.floor(Math.random() * $scope.smallNumbers.length)])
+        console.log('picking a small');
+        if(!arrayIsFull($scope.numberSet)){
+            var small = $scope.smallNumbers[Math.floor(Math.random() * $scope.smallNumbers.length)]
+            $scope.numberSet.push(small)
+            console.log('picked a small ' +  small +'\n');
         }
     };
 
-    var resetCountdown = false;
     $scope.initiateCountdown = function(){
-        if(!resetCountdown){
-            console.log('starting countdown');
-            $scope.gameInfo = !$scope.gameInfo;
-            var mytimeout = $timeout($scope.startCountdown, 1000);
-            resetCountdown = !resetCountdown;
-        }
-        else{
-            console.log('stopping countdown');
-            $scope.gameInfo = !$scope.gameInfo;
-            $timeout.cancel(mytimeout);
-            resetCountdown = !resetCountdown;
-            $scope.reset();
-        }
+        console.log('starting countdown');
+        $scope.calculateTarget();
+        $scope.gameInfo = !$scope.gameInfo;
+        $scope.mytimeout = $timeout($scope.startCountdown, 1000);
     };
 
     $scope.startCountdown =  function(){
         $scope.counter--;
         if($scope.counter >= 0){
             console.log('Counting: ' + $scope.counter);
-            mytimeout = $timeout($scope.startCountdown, 1000);
+            $scope.mymytimeout = $timeout($scope.startCountdown, 1000);
         }
         else{
-            alert('Time is up');
             $scope.reset();
+        }
+    };
+
+    var calculationSet = [];
+    $scope.calculateTarget = function(){
+        //create random number between 3-6
+        var randomSelection = getRandomNumber(3, 6);
+        for (var i = 0; i < randomSelection; i++) {
+            var ran = getRandomNumber(0, $scope.numberSet.length - 1);
+
         }
     };
 
     $scope.reset = function(){
         console.log('resetting counter');
+        $scope.startTimer = !$scope.startTimer;
+        $scope.gameInfo = !$scope.gameInfo;
         $scope.counter = 30;
+    };
+
+    var getRandomNumber = function(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     var inArray = function(array, id){
@@ -69,7 +78,7 @@ app.controller('MainCtrl', function($scope, $timeout){
         return false;
     };
 
-    var arrayFull = function(arr){
+    var arrayIsFull = function(arr){
         var limit = 6;
         if(arr.length === 6){
             return true;
