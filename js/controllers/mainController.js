@@ -48,7 +48,7 @@ app.controller('MainCtrl', function($scope, $timeout){
         }
     };
 
-    var calculationSet = [];
+
     $scope.calculateTarget = function(){
         //create random number between 3-6
         var randomSelection = getRandomNumber(3, 6);
