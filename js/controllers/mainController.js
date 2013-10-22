@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function($scope, $timeout){
+app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService){
     $scope.numberSet = [];
     $scope.target;
     $scope.largeNumbers = [25, 50, 75, 100, 125];
@@ -9,7 +9,7 @@ app.controller('MainCtrl', function($scope, $timeout){
     $scope.startTimer = true;
     $scope.mytimeout;
 
-    $scope.pickLargeNumber =  function(){
+    $scope.pickLargeNumber = function(){
         //checking the size of the array
         if(!arrayIsFull($scope.numberSet)){
             var random = $scope.largeNumbers[Math.floor(Math.random() * $scope.largeNumbers.length)]
@@ -21,7 +21,7 @@ app.controller('MainCtrl', function($scope, $timeout){
             }
         }
     };
-    $scope.pickSmallNumber =  function(){
+    $scope.pickSmallNumber = function(){
         if(!arrayIsFull($scope.numberSet)){
             var small = $scope.smallNumbers[Math.floor(Math.random() * $scope.smallNumbers.length)]
             $scope.numberSet.push(small)
@@ -34,7 +34,7 @@ app.controller('MainCtrl', function($scope, $timeout){
         $scope.processNumbers();
     };
 
-    $scope.startCountdown =  function(){
+    $scope.startCountdown = function(){
         $scope.counter--;
         if($scope.counter >= 0){
             console.log('Counting: ' + $scope.counter);
@@ -45,34 +45,33 @@ app.controller('MainCtrl', function($scope, $timeout){
         }
     };
 
-    var calcArr = [];
-
     $scope.processNumbers = function(){
+        var numberSetClone = [];
         var arithmeticArr = [];
-        cloneArray();
+        numberSetClone = arrayOperationsService.cloneArray($scope.numberSet);
         var randomSelection = getRandomNumber(3, 6);
         console.log('random selection : ' + randomSelection);
         for (var i = 0; i < randomSelection; i++) {
-            var ran = getRandomNumber(0, calcArr.length - 1);
+            var ran = getRandomNumber(0, numberSetClone.length - 1);
             console.log("Random number: " + ran);
-            var number = calcArr[ran];
+            var number = numberSetClone[ran];
             console.log("Random number from numberSet: " + number);
-            var index = calcArr.indexOf(number);
+            var index = numberSetClone.indexOf(number);
             console.log('removing ' + index);
-            calcArr.splice(index, 1);
+            numberSetClone.splice(index, 1);
             arithmeticArr.push(number);
-            showContents();
         }
         calculateTarget(arithmeticArr);
     };
 
     var calculateTarget = function(arr){
-        shuffleArr(arr);
+        arrayOperationsService.shuffleArr(arr);
         var math = 0;
         for(var i = 0; i <= arr.length - 1; i++){
             var operator = $scope.operations[Math.floor(Math.random() * $scope.operations.length)];
+            //testswitch(operator);
             if(typeof arr[i] !== 'undefined' && typeof arr[i+1] !== 'undefined'){
-                console.log("Operator: " + operator + " , two numbers " +  arr[i] + ", " + arr[i+1]);
+                console.log("Operator: " + operator + " , two numbers " + arr[i] + ", " + arr[i+1]);
                 var result = performArithmetic(arr[i], arr[i+1], operator);
                 math = math + result;
                 i++;
@@ -85,7 +84,7 @@ app.controller('MainCtrl', function($scope, $timeout){
         console.log("Math: " + math);
     };
 
-    var performArithmetic =  function(num1, num2, op){
+    var performArithmetic = function(num1, num2, op){
         if(op === '+'){
             return num1 + num2;
         }
@@ -109,24 +108,18 @@ app.controller('MainCtrl', function($scope, $timeout){
         }
     };
 
-    var shuffleArr = function shuffle(o){ //v1.0
-        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-        return o;
-    };
-
-    var showContents = function(){
-        for(var i = 0; i < calcArr.length; i++){
-            console.log('Contents of calcArr : ' + calcArr[i]);
+    var testswitch = function(){
+        switch (op) {
+            case '+':
+                console.log('found');
+            break;
+            case '-':
+                console.log('found');
+            break;
+            case '/':
+                console.log('found');
+            break;
         }
-    };
-
-    var cloneArray = function(){
-        console.log('cloning the array, numberset length ' + $scope.numberSet.length);
-        for(var i = 0; i < $scope.numberSet.length; i++){
-            calcArr.push($scope.numberSet[i]);
-            console.log('CalArr : ' + calcArr[i]);
-        }
-        console.log('finished cloning the array');
     };
 
     $scope.reset = function(){
