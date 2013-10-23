@@ -37,7 +37,6 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService){
     $scope.startCountdown = function(){
         $scope.counter--;
         if($scope.counter >= 0){
-            console.log('Counting: ' + $scope.counter);
             $scope.mymytimeout = $timeout($scope.startCountdown, 1000);
         }
         else{
@@ -50,14 +49,10 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService){
         var arithmeticArr = [];
         numberSetClone = arrayOperationsService.cloneArray($scope.numberSet);
         var randomSelection = getRandomNumber(3, 6);
-        console.log('random selection : ' + randomSelection);
         for (var i = 0; i < randomSelection; i++) {
             var ran = getRandomNumber(0, numberSetClone.length - 1);
-            console.log("Random number: " + ran);
             var number = numberSetClone[ran];
-            console.log("Random number from numberSet: " + number);
             var index = numberSetClone.indexOf(number);
-            console.log('removing ' + index);
             numberSetClone.splice(index, 1);
             arithmeticArr.push(number);
         }
@@ -68,69 +63,56 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService){
         arrayOperationsService.shuffleArr(arr);
         var math = 0;
         for(var i = 0; i <= arr.length - 1; i++){
-            var operator = $scope.operations[Math.floor(Math.random() * $scope.operations.length)];
-            //testswitch(operator);
             if(typeof arr[i] !== 'undefined' && typeof arr[i+1] !== 'undefined'){
-                console.log("Operator: " + operator + " , two numbers " + arr[i] + ", " + arr[i+1]);
-                var result = performArithmetic(arr[i], arr[i+1], operator);
-                math = math + result;
+                var result = performArithmetic(arr[i], arr[i+1]);
+                math = performArithmetic(math, result);
                 i++;
             }
             else{
-                math = performArithmetic(math, arr[i], operator);
+                math = performArithmetic(math, arr[i]);
             }
         }
         $scope.target = math;
-        console.log("Math: " + math);
     };
 
-    var performArithmetic = function(num1, num2, op){
-        if(op === '+'){
-            return num1 + num2;
-        }
-        else if(op === '-'){
-            //extra check to make sure num 1 is greater than num2
-            if(num1 <= num2){
-                return num1 - num2;
-            }
-            else{
-                return num2 - num1;
-            }
-        }
-        else if(op === '*'){
-            return num1 * num2;
-        }
-        else if(op === '/'){
-            return num1 / num2;
+    var performArithmetic = function(num1, num2){
+         var op = $scope.operations[Math.floor(Math.random() * $scope.operations.length)];
+         switch(op){
+            case "+":
+                return num1 + num2;
+                break;
+            case "-":
+                return subtract(num1, num2);
+                //I need to make sure num1 is larger than nume2, sort by largest first
+                break;
+            case "*":
+                return num1 * num2;
+                break;
+            case "/":
+                return num1 / num2;
+                break;
+            default:
+                return num1 + num2;
+                break;
+         }
+     }
+
+    var subtract =  function(num1, num2){
+        if(num1 >= num2){
+            return num1 - num2;
         }
         else{
-            return num1 + num2;
+            return num2 - num1;
         }
-    };
-
-    var testswitch = function(){
-        switch (op) {
-            case '+':
-                console.log('found');
-            break;
-            case '-':
-                console.log('found');
-            break;
-            case '/':
-                console.log('found');
-            break;
-        }
-    };
+    }
 
     $scope.reset = function(){
-        console.log('resetting counter');
         $scope.startTimer = !$scope.startTimer;
         $scope.gameInfo = !$scope.gameInfo;
         $scope.counter = 30;
     };
 
     var getRandomNumber = function(min, max){
-        console.log('Getting a random number');
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
