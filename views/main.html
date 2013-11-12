@@ -1,11 +1,12 @@
 <div class="hero-unit">
 
-    <div id="number-fields">
+    <div class="number-fields">
     <ul>
-        <li title="Number"
-         ng-repeat="number in numberSet"
+        <li
+         ng-repeat="number in numbers track by $index"
+         ng-controller="MainCtrl"
          ng-model="number">
-         <h1>{{number}}</h1>
+         <h1>{{ number }}</h1>
     </li>
     </ul>
 </div></br>
@@ -13,6 +14,7 @@
     <div id="button-group">
         <button title="Pick from the large stack" ng-click="pickLargeNumber()">Large</button>
         <button title="Pick from the small stack" ng-click="pickSmallNumber()">Small</button>
+        <button title="Clear, and start again" ng-click="clear()">Clear</button>
         <button title="Start timer" ng-click="initiateCountdown()"
         ng-hide="startTimer">Start</button>
     </div>
