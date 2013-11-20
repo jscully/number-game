@@ -10,21 +10,24 @@
     </li>
     </ul>
 </div></br>
-
-    <div id="button-group">
+<center>
+    <div class="button-group">
         <button title="Pick from the large stack" ng-click="pickLargeNumber()">Large</button>
         <button title="Pick from the small stack" ng-click="pickSmallNumber()">Small</button>
         <button title="Clear, and start again" ng-click="clear()">Clear</button>
         <button title="Start timer" ng-click="initiateCountdown()"
         ng-hide="startTimer">Start</button>
     </div>
+</center>
 <center>
     <div id="item-group" ng-hide="gameInfo">
         <div id="counter">
-            <p id="special-p">{{counter}}</p>
+            <h2>Countdown Timer</h2>
+            <p id="game-info">{{counter}}</p>
         </div>
         <div id="target">
-            <p id="special-p">{{target}}</p>
+            <h2>Target Number</h2>
+            <p id="game-info">{{target}}</p>
         </div>
     </div>
 </center>

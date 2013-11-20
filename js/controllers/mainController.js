@@ -24,6 +24,7 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService, te
     $scope.clear = function(){
         $scope.numbers = [];
         initialiseArrays();
+        $scope.reset();
     };
 
     $scope.pickLargeNumber = function(){
@@ -57,7 +58,8 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService, te
     };
 
     $scope.initiateCountdown = function(){
-        $scope.gameInfo = !$scope.gameInfo;
+        $scope.gameInfo = false;
+        $scope.counter = 30;
         $scope.mytimeout = $timeout($scope.startCountdown, 1000);
         $scope.processNumbers();
     };
@@ -93,36 +95,65 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService, te
         arrayOperationsService.shuffleArr(arr);
         var math = 0;
         for(var i = 0; i <= arr.length - 1; i++){
+            console.log("contents of the array: " + arr[i]);
+        }
+        for(var i = 0; i <= arr.length - 1; i++){
             if(typeof arr[i] !== 'undefined' && typeof arr[i+1] !== 'undefined'){
                 var result = performArithmetic(arr[i], arr[i+1]);
-                math = performArithmetic(math, result);
-                i++;
+                if(math === 0 ){
+                    math = result
+                }else{
+                    math = performArithmetic(math, result);
+                }
+                i++; // I don't know why I am doing this ? :)
             }
             else{
+                console.log("last number is : " + arr[i]);
                 math = performArithmetic(math, arr[i]);
             }
         }
+        //check if the answer is too easy
+        if(math >= 9 && !checkTarget(math)){
             $scope.target = math;
+            showCalculations();
+        }
+        else{
+            console.log("calling the function again");
+            $scope.processNumbers();
+        }
     };
 
+    // function to check that the eventual target number is not present in the array of numbers preventing a no arithmetic answer.
+    var checkTarget = function(num){
+        console.log("check target");
+        if(num < 150){
+            console.log("target is less than 150");
+            for(var i = 0; i <= $scope.numbers.length; i++){
+                if($scope.numbers[i] === num){
+                    console.log("target is in the array : " + num);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     var performArithmetic = function(num1, num2){
          var op = $scope.operations[Math.floor(Math.random() * $scope.operations.length)];
          switch(op){
             case "+":
-            console.log(num1 + " + " + num2);
+            console.log("ADDITION: " +num1 + " + " + num2);
                 return num1 + num2;
                 break;
             case "-":
-            console.log(num1 + " - " + num2);
+            console.log("SUBTRACTION: " +num1 + " - " + num2);
                 return subtract(num1, num2);
-                //I need to make sure num1 is larger than nume2, sort by largest first
                 break;
             case "*":
-            console.log(num1 + " * " + num2);
+            console.log("MULTIPLICATION: " + num1 + " * " + num2);
                 return num1 * num2;
                 break;
             case "/":
-            console.log(num1 + " / " + num2);
+            console.log("DIVISION: " + num1 + " / " + num2);
                 return divide(num1, num2);
                 break;
             default:
@@ -140,19 +171,30 @@ app.controller('MainCtrl', function($scope, $timeout, arrayOperationsService, te
         }
     }
 
+//such an ugly function. NEEDS a lot of work
     var divide = function(num1, num2){
+        var divisionAnswer;
         if(num1 >= num2){
-            return num1 / num2;
+            divisionAnswer = num1 / num2;
         }
         else{
-            return num2 / num2;
+            divisionAnswer = num2 / num2;
+        }
+        if(divisionAnswer %1 != 0){
+            console.log("Division produces decimal point, going again...." + divisionAnswer);
+            performArithmetic(num1, num2);
+        }
+        else{
+            console.log("division doesn't produce demical point.");
+            return divisionAnswer;
         }
     };
 
     $scope.reset = function(){
-        $scope.startTimer = !$scope.startTimer;
-        $scope.gameInfo = !$scope.gameInfo;
-        $scope.counter = 30;
+        $scope.startTimer = true;
+        $scope.gameInfo = true;
+        $scope.counter = null;
+        $scope.target = null;
     };
 
     var getRandomNumber = function(min, max){
